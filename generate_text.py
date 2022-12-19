@@ -13,8 +13,8 @@ from config import Config
 device = torch.device("cpu")
 
 print("Downloading model binaries...")
-tokenizer = GPT2Tokenizer.from_pretrained(Config.MODEL_HF_NAME)
-model = GPT2LMHeadModel.from_pretrained(Config.MODEL_HF_NAME)
+tokenizer = GPT2Tokenizer.from_pretrained(Config.MODEL_LOCAL_PATH, local_files_only=True)
+model = GPT2LMHeadModel.from_pretrained(Config.MODEL_LOCAL_PATH, local_files_only=True)
 print("Done.")
 
 def generate_n_words(lenght_of_sentence, start_sentence, device):

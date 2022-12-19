@@ -5,7 +5,7 @@ WORKDIR /app
 RUN addgroup --gid 1024 medved && \
     adduser --disabled-password --home /home/medved --ingroup medved medved --gecos ""
 
-COPY ./models/gpt3_medium_medved_9.pt /app/models
+COPY ./models/gpt3_medium_medved_9.pt /app/models/gpt3_medium_medved_9.pt
 
 COPY ./*.py ./requirements.txt /app/
 
