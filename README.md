@@ -9,7 +9,7 @@ docker build \
 .
 ```
 
-Then to run docker container run 
+Then to run Docker container run 
 
 ```bash
 docker run -dit medved 
@@ -19,6 +19,22 @@ or
 
 ```bash
 docker run -ti medved python 20221217_neuro_medv_bot.py
+```
+
+You can also run it directly from DockerHub
+
+```bash 
+docker pull sergeychuvakin/medved:0.1
+
+docker run -ti sergeychuvakin/medved python 20221217_neuro_medv_bot.py
+```
+
+To update the image on DockerHub you can use the following commands
+
+```bash 
+docker login
+docker tag medved <YOUR_USERNAME/medved:<NEW_TAG>
+docker push <YOUR_USERNAME/medved:<NEW_TAG>
 ```
 
 
