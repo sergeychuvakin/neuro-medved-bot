@@ -1,5 +1,6 @@
 import os
 import logging
+from config import Config
 
 from telegram import ForceReply, ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.ext import (
@@ -18,7 +19,11 @@ from generate_text import  generate_n_words, device
 def test_outside_fun(message):
     """" Медведящая функция тут """
 
-    output = generate_n_words(30, message, device)
+    output = generate_n_words(
+        lenght_of_sentence=Config.NUMBER_OF_WORDS, 
+        start_sentence=message, 
+        device=device
+        )
 
     answer = f"Вы ввели: {message}\nДмитирий Анатольевич сказал бы так:\n{output}"
     return answer
