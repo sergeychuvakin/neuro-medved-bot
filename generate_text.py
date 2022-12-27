@@ -13,8 +13,8 @@ from config import Config
 device = torch.device("cpu")
 
 print("Downloading model binaries...")
-tokenizer = GPT2Tokenizer.from_pretrained(Config.MODEL_LOCAL_PATH, local_files_only=True)
-model = GPT2LMHeadModel.from_pretrained(Config.MODEL_LOCAL_PATH, local_files_only=True)
+tokenizer = GPT2Tokenizer.from_pretrained(Config.NEW_TRAINED_MODEL_HF_NAME)
+model = GPT2LMHeadModel.from_pretrained(Config.NEW_TRAINED_MODEL_HF_NAME)
 print("Done.")
 
 def generate_n_words(lenght_of_sentence, start_sentence, device):
@@ -48,6 +48,7 @@ def generate_n_words(lenght_of_sentence, start_sentence, device):
     return output_text
 
 
-# start_sentence = "Хочу поздравить Россиян с"
-# LENGTH_OF_SENTENCE = 100
-# print(generate_n_words(LENGTH_OF_SENTENCE, start_sentence, device))
+if __name__ == "__main__":
+    start_sentence = "Хочу поздравить Россиян с"
+    LENGTH_OF_SENTENCE = 100
+    print(generate_n_words(LENGTH_OF_SENTENCE, start_sentence, device))
