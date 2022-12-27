@@ -2,8 +2,13 @@
 
 ## Run without Docker
 
-Firstly you need you need to set `TG_TOKEN` env variable  (sent in person).
-Also, it's better to use the virtual enviromental for python:
+Firstly you need to set `TG_TOKEN` env variable  (sent in person).
+
+```bash
+export TG_TOKEN=TOKEN
+```
+
+Also, it's better to use the virtual env. for python:
 
 ```bash
 python -m venv env
