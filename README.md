@@ -1,9 +1,8 @@
 # Neuro Medvedev tg bot
 
-Run without Docker
+## Run without Docker
 
-Firstly you need the model itself with the following naming convention `gpt3_medium_medved_{EPOCH}.pt`
-Secondly you need `TG_TOKEN` env variable, that will be sent in person.
+Firstly you need you need to set `TG_TOKEN` env variable  (sent in person).
 Also, it's better to use the virtual enviromental for python:
 
 ```bash
@@ -16,8 +15,7 @@ As soon you have everything just run the file:
 pip install -r requirements.txt
 python bot-bot.py
 ```
-
-
+## Run with docker
 To rebuild Docker image run the following command
 
 ```bash
