@@ -7,7 +7,7 @@ from generate_text import  generate_n_words, device
 
 @app.route("/gpt/medved")
 
-def send_sector():
+def infer():
     
     phrase = request.args.get('phrase')
     
@@ -16,7 +16,7 @@ def send_sector():
         start_sentence=phrase, 
         device=device
         )
-    return {"Your phrase is": out}
+    return {"Dmitro says": out}
 
 if __name__ == '__main__':
    app.run()
