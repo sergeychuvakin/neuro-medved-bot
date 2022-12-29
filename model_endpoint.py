@@ -27,8 +27,9 @@ def infer():
             device=device
         )
         r.set(phrase, out)
-
-    return {"Dmitro says": out.decode("utf-8")}
+    else:
+        out = out.decode("utf-8")
+    return {"Dmitro says": out}
 
 if __name__ == '__main__':
    app.run(host='0.0.0.0', port=5000)
