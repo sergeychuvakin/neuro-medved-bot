@@ -1,6 +1,7 @@
 from flask import Flask, request
 from generate_text import  generate_n_words, device
 import redis
+from config import Config
 
 app = Flask(__name__)
 r = redis.Redis(
@@ -20,10 +21,10 @@ def infer():
 
     if out is None:
         out = generate_n_words(
-            lenght_of_sentence=30,
+            lenght_of_sentence=Config.NUMBER_OF_WORDS,
             start_sentence=phrase,
-            determenistic_n=2,
-            context="Санкции Пиндостана",
+            determenistic_n=3,
+            context=Config.PRESET_PHARASES_WITH_CONTEXT.get(phrase, None),
             device=device
         )
         r.set(phrase, out)

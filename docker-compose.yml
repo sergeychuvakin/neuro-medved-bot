@@ -1,14 +1,26 @@
 version: '3'
 services:
   api:
-    container_name: flask-container
-    build: .
+    container_name: flask-api
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '5000:5000'
     depends_on:
       - redis
   redis:
     image: redis
-    container_name: redis-container
+    container_name: redis-server
     ports:
       - "6379:6379"
+  tg_bot:
+    container_name: tg_bot
+    build:
+      context: .
+      dockerfile: Dockerfile_bot
+    env_file:
+      - env.txt
+    depends_on:
+      - redis
+      - api

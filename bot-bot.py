@@ -1,60 +1,35 @@
 import logging
-
-import os
+from flask import Flask
 import logging
 from config import Config
+import requests
 
 from telegram import (
-    ForceReply,
     ReplyKeyboardMarkup,
-    ReplyKeyboardRemove,
     Update,
     KeyboardButton,
 )
 from telegram.ext import (
     CallbackContext,
     CommandHandler,
-    ContextTypes,
-    ConversationHandler,
     Filters,
     MessageHandler,
     Updater,
 )
 
-from generate_text import generate_n_words, device
-
-# from telegram import *
-# from telegram.ext import *
-# from requests import *
-
-
-def test_outside_fun(message):
-
-    if message == "help":
-        return Config.HELP_MESSAGE
-
-    
-    output = generate_n_words(
-        lenght_of_sentence=Config.NUMBER_OF_WORDS, 
-        start_sentence=message, 
-        device=device
-        )
-
-    answer = f"Вы выбрали: {message}\nДмитирий Анатольевич сказал бы так:\n{output}"
-    return answer
-
+app = Flask(__name__)
 
 # Enable logging
 logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-# тут всё зависит от скобочек - сколько кнопок в строку [[be],[be]] или [[ be, be],[ be,be ]]
+
+# Книпки зависит от скобочек 1 в ряд [[be],[be]] или 2 в ряду[[ be, be],[ be,be ]]
 def start_with_key(update: Update, context: CallbackContext):
     buttons = [
-        [KeyboardButton(phrase)] for phrase in Config.PRESET_PHARASES
+        [KeyboardButton(phrase)] for phrase in Config.PRESET_PHARASES_WITH_CONTEXT.keys()
         ]
 
     context.bot.send_message(
@@ -64,14 +39,28 @@ def start_with_key(update: Update, context: CallbackContext):
     )
 
 
+
 def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text("ничего такого")
+    # может положить ссылку на конституцию или сайт правозащитников
+    update.message.reply_text('ничего такого')
 
 
-def medvo(update: Update, context: CallbackContext) -> None:
+
+"""то котики каторые активируются сообщением человека. заменить нутри get_cat() на Медведева"""
+def medvo_command(update: Update, context: CallbackContext):
     var = update.message.text
-    update.message.reply_text(test_outside_fun(var))
+    update.message.reply_text(get_medved(var))
+
+
+"""вот эту переписать, чтобы ходила не на кошачий сайт а на нейросеть. 
+она вернет текст, а та что выше отправит его в чат"""
+def get_medved(msg):
+    params = {"phrase": msg}
+
+    api_result = requests.get(Config.MODEL_ENDPOINT_URL, params=params)     
+    api_response = api_result.json()
+    return f"Дмитрий Анатольевич сказал бы так\n{api_response['Dmitro says']}"
+    # return f"Дмитрий Анатольевич сказал бы так\n{msg}"
 
 
 def error(update, context):
@@ -83,27 +72,23 @@ def error(update, context):
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    # updater = Updater(token)
+    print(Config.TG_TOKEN)
     updater = Updater(Config.TG_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
     # dispatcher.add_handler(CommandHandler("start", start))
     # on non command i.e message
-    # dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, medvo))
     dispatcher.add_handler(CommandHandler("help", help_command))
     dispatcher.add_error_handler(error)
 
-    # BUTTONS
+    # BUTTONS   
     dispatcher.add_handler(CommandHandler("start", start_with_key))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, medvo))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, medvo_command))
+
 
     # Start the Bot
     updater.start_polling()
-    # Run the bot until you press Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT. This should be used most of the time, since
-    # start_polling() is non-blocking and will stop the bot gracefully.
     updater.idle()
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
