@@ -21,5 +21,5 @@ class Config:
     }
     TG_TOKEN = os.getenv("TG_TOKEN")
     HELP_MESSAGE: str = "Выберите пожалуйста одну из опций и Нейро-Медведев Бот закончит фразу"
-    MODEL_ENDPOINT_URL: str = "http://127.0.0.1:5000/gpt/medved"
+    MODEL_ENDPOINT_URL: str = "api:5000/gpt/medved"
 

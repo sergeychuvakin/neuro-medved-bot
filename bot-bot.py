@@ -72,7 +72,6 @@ def error(update, context):
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    print(Config.TG_TOKEN)
     updater = Updater(Config.TG_TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 

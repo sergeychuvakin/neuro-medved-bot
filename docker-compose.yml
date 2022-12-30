@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    networks:
+      - net
     ports:
       - '5000:5000'
     depends_on:
@@ -12,6 +14,8 @@ services:
   redis:
     image: redis
     container_name: redis-server
+    networks:
+      - net
     ports:
       - "6379:6379"
   tg_bot:
@@ -24,3 +28,8 @@ services:
     depends_on:
       - redis
       - api
+    networks:
+      - net
+networks:
+  net:
+    driver: bridge
