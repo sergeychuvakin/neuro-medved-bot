@@ -1,0 +1,19 @@
+FROM python:3.8
+
+WORKDIR /app
+
+RUN addgroup --gid 1024 medved && \
+    adduser --disabled-password --home /home/medved --ingroup medved medved --gecos ""
+
+COPY ./requirements_bot.txt /app/requirements_bot.txt
+
+RUN apt-get update -y && apt-get upgrade -y && \
+    python -m pip install --upgrade pip && \
+    pip install -r requirements_bot.txt
+
+COPY ./*.py /app/
+ARG token
+
+ENV TG_TOKEN=${token}
+
+CMD python bot-bot.py
