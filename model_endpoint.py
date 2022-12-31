@@ -2,8 +2,12 @@ from flask import Flask, request
 from generate_text import  generate_n_words, device
 import redis
 from config import Config
+from random import choice
+
+options = tuple(range(Config.N_OPTIONS))
 
 app = Flask(__name__)
+
 r = redis.Redis(
     host='redis', 
     port=6379,
@@ -15,9 +19,9 @@ r = redis.Redis(
 @app.route("/gpt/medved")
 def infer():
     
+    option = choice(options)
     phrase = request.args.get('phrase')
-    
-    out = r.get(phrase) 
+    out = r.get(f"{phrase}_{option}") 
 
     if out is None:
         out = generate_n_words(
@@ -27,7 +31,7 @@ def infer():
             context=Config.PRESET_PHARASES_WITH_CONTEXT.get(phrase, None),
             device=device
         )
-        r.set(phrase, out)
+        r.set(f"{phrase}_{option}", out)
     else:
         out = out.decode("utf-8")
     return {"Dmitro says": out}

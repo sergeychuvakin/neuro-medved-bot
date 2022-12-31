@@ -12,7 +12,7 @@ RUN apt-get update -y && apt-get upgrade -y && \
     pip install -r requirements.txt
 
 COPY ./*.py /app/
-
 EXPOSE 5000
 
+# ENTRYPOINT python add_cache.py
 CMD python model_endpoint.py

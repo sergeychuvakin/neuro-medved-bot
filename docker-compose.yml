@@ -1,5 +1,12 @@
 version: '3'
 services:
+  redis:
+    image: redis
+    container_name: redis-server
+    networks:
+      - net
+    ports:
+      - "6379:6379"
   api:
     container_name: flask-api
     build:
@@ -10,14 +17,7 @@ services:
     ports:
       - '5000:5000'
     depends_on:
-      - redis
-  redis:
-    image: redis
-    container_name: redis-server
-    networks:
-      - net
-    ports:
-      - "6379:6379"
+      - redis  
   tg_bot:
     container_name: tg_bot
     build:
